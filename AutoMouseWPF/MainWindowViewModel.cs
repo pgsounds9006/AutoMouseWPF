@@ -89,6 +89,7 @@ namespace AutoMouseWPF
         void Start()
         {
             if (DelayValue is null) return;
+            if (IsRunning) return;
 
             IsRunning = true;
             Task.Run(Work);
