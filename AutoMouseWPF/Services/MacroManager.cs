@@ -19,7 +19,7 @@ namespace AutoMouseWPF.Services
         void Stop();
         EventHandler? RunningStateChanged { get; set; }
     }
-    
+
     public class MacroManager : IMacroManager
     {
         private IKeyboardMouseEvents _globalHook;
@@ -63,7 +63,7 @@ namespace AutoMouseWPF.Services
                 }
             });
         }
-            
+
         public void Stop()
         {
             IsRunning = false;

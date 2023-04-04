@@ -40,7 +40,7 @@
 						 IsReadOnly="True"
 						 >
 					<i:Interaction.Behaviors>
-						<behavior:ShortcutTextBoxBehavior ShortcutChangedCommand="{Binding StartShorcutChangedCommand}" />
+						<behavior:ShortcutTextBoxBehavior ShortcutChangedCommand="{Binding StartShortcutChangedCommand}" />
 					</i:Interaction.Behaviors>
 				</TextBox>
 				<Label Grid.Row="1">종료 단축키</Label>
@@ -50,7 +50,7 @@
 						 IsReadOnly="True"
 						 >
 					<i:Interaction.Behaviors>
-						<behavior:ShortcutTextBoxBehavior ShortcutChangedCommand="{Binding StopShorcutChangedCommand}" />
+						<behavior:ShortcutTextBoxBehavior ShortcutChangedCommand="{Binding StopShortcutChangedCommand}" />
 					</i:Interaction.Behaviors>
 				</TextBox>
 			</Grid>

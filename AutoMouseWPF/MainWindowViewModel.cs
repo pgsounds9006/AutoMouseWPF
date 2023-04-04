@@ -1,20 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Runtime.InteropServices;
-using System.Diagnostics;
-using Gma.System.MouseKeyHook;
-using System.Windows.Forms;
-using Microsoft.Extensions.DependencyInjection;
 using AutoMouseWPF.Services;
 
 namespace AutoMouseWPF
@@ -43,8 +31,8 @@ namespace AutoMouseWPF
 
 
         public string RunningStatus => IsRunning ? "동작 중" : "정지";
-        public ICommand StartShorcutChangedCommand { get; }
-        public ICommand StopShorcutChangedCommand { get; }
+        public ICommand StartShortcutChangedCommand { get; }
+        public ICommand StopShortcutChangedCommand { get; }
         public ICommand DelayChangedCommand { get; }
         public ICommand StartCommand { get; }
         public ICommand StopCommand { get; }
@@ -58,8 +46,8 @@ namespace AutoMouseWPF
             _macroManager = macroManager;
 
             DelayChangedCommand = new RelayCommand<int>(DelayValueChanged);
-            StartShorcutChangedCommand = new RelayCommand<List<Key>>(StartShortcutChanged);
-            StopShorcutChangedCommand = new RelayCommand<List<Key>>(StopShortcutChanged);
+            StartShortcutChangedCommand = new RelayCommand<List<Key>>(StartShortcutChanged);
+            StopShortcutChangedCommand = new RelayCommand<List<Key>>(StopShortcutChanged);
 
             StartCommand = new RelayCommand(Start);
             StopCommand = new RelayCommand(Stop);
