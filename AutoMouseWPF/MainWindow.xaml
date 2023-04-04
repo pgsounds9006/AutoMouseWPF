@@ -17,7 +17,7 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
 		ResizeMode="NoResize"
-        Title="AutoMouseWPF" Height="300" Width="300">
+        Title="AutoMouseWPF" Height="350" Width="300">
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
@@ -58,30 +58,53 @@
 		<GroupBox Margin="5,2.5,5,5" 
 				  Header="동작 설정"
 				  Grid.Row="1">
-			<Grid VerticalAlignment="Top">
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="Auto"/>
-					<ColumnDefinition/>
-				</Grid.ColumnDefinitions>
+
+			<Grid>
 				<Grid.RowDefinitions>
-					<RowDefinition/>
-					<RowDefinition/>
+					<RowDefinition Height="Auto"/>
 					<RowDefinition/>
 				</Grid.RowDefinitions>
-				<Label>마우스 버튼</Label>
-				<StackPanel Grid.Column="1" Orientation="Horizontal">
-					<RadioButton IsChecked="{Binding LeftMouseButton}">좌클릭</RadioButton>
-					<RadioButton IsChecked="{Binding RightMouseButton}">우클릭</RadioButton>
-				</StackPanel>
-				<Label Grid.Row="1">시간 설정(ms)</Label>
-				<TextBox Grid.Row="1" Grid.Column="1" IsEnabled="{Binding IsRunning, Converter={StaticResource InvertBooleanConverter} }" >
-					<i:Interaction.Behaviors>
-						<behavior:IntegerOnlyTextBoxBehavior ValueChangedCommand="{Binding DelayChangedCommand}" />
-					</i:Interaction.Behaviors>
-				</TextBox>
-				<Label Grid.Row="2">현재 상태</Label>
-				<Label Grid.Row="2" Grid.Column="1" Content="{Binding RunningStatus}" />
+				<Grid VerticalAlignment="Top">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto"/>
+						<ColumnDefinition/>
+					</Grid.ColumnDefinitions>
+					<Grid.RowDefinitions>
+						<RowDefinition/>
+						<RowDefinition/>
+						<RowDefinition/>
+					</Grid.RowDefinitions>
+					<Label>마우스 버튼</Label>
+					<StackPanel Grid.Column="1" Orientation="Horizontal">
+						<RadioButton IsChecked="{Binding LeftMouseButton}">좌클릭</RadioButton>
+						<RadioButton IsChecked="{Binding RightMouseButton}">우클릭</RadioButton>
+					</StackPanel>
+					<Label Grid.Row="1">시간 설정(ms)</Label>
+					<TextBox Grid.Row="1" Grid.Column="1" IsEnabled="{Binding IsRunning, Converter={StaticResource InvertBooleanConverter} }" >
+						<i:Interaction.Behaviors>
+							<behavior:IntegerOnlyTextBoxBehavior ValueChangedCommand="{Binding DelayChangedCommand}" />
+						</i:Interaction.Behaviors>
+					</TextBox>
+					<Label Grid.Row="2">현재 상태</Label>
+					<Label Grid.Row="2" Grid.Column="1" Content="{Binding RunningStatus}" />
+				</Grid>
+				<Grid Grid.Row="1">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition/>
+						<ColumnDefinition/>
+					</Grid.ColumnDefinitions>
+					<Button IsEnabled="{Binding IsRunning, Converter={StaticResource InvertBooleanConverter}}"
+							Margin="0,0,2.5,0"
+							Command="{Binding StartCommand}"
+							>시작</Button>
+					<Button Grid.Column="1"
+							Margin="2.5,0,0,0"
+							IsEnabled="{Binding IsRunning}"
+							Command="{Binding StopCommand}"
+							>종료</Button>
+				</Grid>
 			</Grid>
+
 		</GroupBox>
 	</Grid>
 </Window>

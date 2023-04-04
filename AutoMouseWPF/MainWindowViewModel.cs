@@ -46,6 +46,9 @@ namespace AutoMouseWPF
         public ICommand StartShorcutChangedCommand { get; }
         public ICommand StopShorcutChangedCommand { get; }
         public ICommand DelayChangedCommand { get; }
+        public ICommand StartCommand { get; }
+        public ICommand StopCommand { get; }
+
 
         public List<Key> StartShortcut { get; set; } = new();
         public List<Key> StopShortcut { get; set; } = new();
@@ -60,6 +63,9 @@ namespace AutoMouseWPF
             StartShorcutChangedCommand = new RelayCommand<List<Key>>(StartShortcutChanged);
             StopShorcutChangedCommand = new RelayCommand<List<Key>>(StopShortcutChanged);
 
+            StartCommand = new RelayCommand(Start);
+            StopCommand = new RelayCommand(Stop);
+
         }
 
         private void GlobalHook_KeyUp(object? sender, System.Windows.Forms.KeyEventArgs e)
@@ -69,20 +75,28 @@ namespace AutoMouseWPF
 
         private void GlobalHook_KeyDown(object? sender, System.Windows.Forms.KeyEventArgs e)
         {
-            if (DelayValue is null) return;
             if (StartShortcut.Count > 0 && StopShortcut.Count > 0)
             {
                 _pressedKeys.Add(KeyInterop.KeyFromVirtualKey(e.KeyValue));
-                if (StartShortcut.All(x => _pressedKeys.Contains(x)))
-                {
-                    IsRunning = true;
-                    Task.Run(Work);
-                }
-                if (StopShortcut.All(x => _pressedKeys.Contains(x)))
-                {
-                    IsRunning = false;
-                }
+                if (StartShortcut.All(_pressedKeys.Contains))
+                    Start();
+
+                if (StopShortcut.All(_pressedKeys.Contains))
+                    Stop();
             }
+        }
+
+        void Start()
+        {
+            if (DelayValue is null) return;
+
+            IsRunning = true;
+            Task.Run(Work);
+        }
+
+        void Stop()
+        {
+            IsRunning = false;
         }
 
         private void Work()
