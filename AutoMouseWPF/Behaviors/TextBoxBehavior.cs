@@ -51,8 +51,6 @@ namespace AutoMouseWPF.Behaviors
             // Add the pressed key to the list of currently pressed keys
             if (!_pressedKeys.Contains(e.Key))
                 _pressedKeys.Add(e.Key);
-
-
         }
 
         private void AssociatedObject_KeyUp(object sender, KeyEventArgs e)
@@ -60,7 +58,7 @@ namespace AutoMouseWPF.Behaviors
             // Check if the pressed keys match the shortcut keys
             if (_pressedKeys.Count > 0 )
             {
-                _pressedKeys.ForEach(x => Shortcut.Add(x));
+                _pressedKeys.ForEach(Shortcut.Add);
                 // Execute the shortcut command if it is set
                 if (ShortcutChangedCommand.CanExecute(null))
                     ShortcutChangedCommand?.Execute(Shortcut);
