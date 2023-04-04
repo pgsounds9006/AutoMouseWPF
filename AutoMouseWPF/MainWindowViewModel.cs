@@ -14,12 +14,13 @@ using System.Runtime.InteropServices;
 using System.Diagnostics;
 using Gma.System.MouseKeyHook;
 using System.Windows.Forms;
+using Microsoft.Extensions.DependencyInjection;
+using AutoMouseWPF.Services;
 
 namespace AutoMouseWPF
 {
     public partial class MainWindowViewModel : ObservableObject
     {
-        private IKeyboardMouseEvents _globalHook;
 
         [ObservableProperty]
         private string? _startShortcutText = "";
@@ -40,7 +41,6 @@ namespace AutoMouseWPF
         [ObservableProperty]
         private bool _rightMouseButton = false;
 
-        private List<Key> _pressedKeys = new();
 
         public string RunningStatus => IsRunning ? "동작 중" : "정지";
         public ICommand StartShorcutChangedCommand { get; }
@@ -52,12 +52,10 @@ namespace AutoMouseWPF
 
         public List<Key> StartShortcut { get; set; } = new();
         public List<Key> StopShortcut { get; set; } = new();
-
-        public MainWindowViewModel()
+        private readonly IMacroManager _macroManager;
+        public MainWindowViewModel(IMacroManager macroManager)
         {
-            _globalHook = Hook.GlobalEvents();
-            _globalHook.KeyDown += GlobalHook_KeyDown;
-            _globalHook.KeyUp += GlobalHook_KeyUp;
+            _macroManager = macroManager;
 
             DelayChangedCommand = new RelayCommand<int>(DelayValueChanged);
             StartShorcutChangedCommand = new RelayCommand<List<Key>>(StartShortcutChanged);
@@ -66,63 +64,42 @@ namespace AutoMouseWPF
             StartCommand = new RelayCommand(Start);
             StopCommand = new RelayCommand(Stop);
 
+            _macroManager.RunningStateChanged += OnRunningStateChanged;
         }
 
-        private void GlobalHook_KeyUp(object? sender, System.Windows.Forms.KeyEventArgs e)
+        private void OnRunningStateChanged(object? sender, EventArgs e)
         {
-            _pressedKeys.Clear();
-        }
-
-        private void GlobalHook_KeyDown(object? sender, System.Windows.Forms.KeyEventArgs e)
-        {
-            if (StartShortcut.Count > 0 && StopShortcut.Count > 0)
-            {
-                _pressedKeys.Add(KeyInterop.KeyFromVirtualKey(e.KeyValue));
-                if (StartShortcut.All(_pressedKeys.Contains))
-                    Start();
-
-                if (StopShortcut.All(_pressedKeys.Contains))
-                    Stop();
-            }
+            IsRunning = _macroManager.IsRunning;
         }
 
         void Start()
         {
-            if (DelayValue is null) return;
-            if (IsRunning) return;
-
-            IsRunning = true;
-            Task.Run(Work);
+            _macroManager.Start();
         }
 
         void Stop()
         {
-            IsRunning = false;
-        }
-
-        private void Work()
-        {
-            while (IsRunning)
-            {
-                ClickSender.SendClick(LeftMouseButton ? MouseButton.Left : MouseButton.Right);
-                System.Threading.Thread.Sleep((int)DelayValue!);
-            }
+            _macroManager.Stop();
         }
 
         private void DelayValueChanged(int value)
         {
             DelayValue = value;
+            _macroManager.Interval = value;
         }
+
 
         private void StartShortcutChanged(List<Key>? values)
         {
             if (values == null) return;
+            _macroManager.StartShortcut = values;
             StartShortcut = values;
             StartShortcutText = string.Join("+", values);
         }
         private void StopShortcutChanged(List<Key>? values)
         {
             if (values == null) return;
+            _macroManager.StopShortcut = values;
             StopShortcut = values;
             StopShortcutText = string.Join("+", values);
         }
