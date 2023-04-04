@@ -6,10 +6,11 @@
              StartupUri="MainWindow.xaml">
 	<Application.Resources>
 		<ResourceDictionary>
-			<ResourceDictionary.MergedDictionaries>
-				<materialDesign:BundledTheme BaseTheme="Dark" PrimaryColor="Red" SecondaryColor="Lime" />
+            <ResourceDictionary.MergedDictionaries>
+				<materialDesign:BundledTheme BaseTheme="Dark" PrimaryColor="Amber" SecondaryColor="Lime" />
 				<ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
 			</ResourceDictionary.MergedDictionaries>
-		</ResourceDictionary>
+            <local:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
+        </ResourceDictionary>
 	</Application.Resources>
 </Application>

@@ -18,93 +18,105 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
 		ResizeMode="NoResize"
         Title="AutoMouseWPF" Height="350" Width="300">
-	<Grid>
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition/>
-		</Grid.RowDefinitions>
-		<GroupBox Margin="5,5,5,2.5" 
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <GroupBox Margin="5,5,5,2.5" 
 				  Header="단축키 설정">
-			<Grid VerticalAlignment="Top">
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="Auto"/>
-					<ColumnDefinition/>
-				</Grid.ColumnDefinitions>
-				<Grid.RowDefinitions>
-					<RowDefinition/>
-					<RowDefinition/>
-				</Grid.RowDefinitions>
-				<Label>시작 단축키</Label>
-				<TextBox Text="{Binding StartShortcutText}"
+            <Grid VerticalAlignment="Top">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Label>시작 단축키</Label>
+                <TextBox Text="{Binding StartShortcutText}"
 						 Grid.Column="1"
 						 IsReadOnly="True"
 						 >
-					<i:Interaction.Behaviors>
-						<behavior:ShortcutTextBoxBehavior ShortcutChangedCommand="{Binding StartShortcutChangedCommand}" />
-					</i:Interaction.Behaviors>
-				</TextBox>
-				<Label Grid.Row="1">종료 단축키</Label>
-				<TextBox Text="{Binding StopShortcutText}"
+                    <i:Interaction.Behaviors>
+                        <behavior:ShortcutTextBoxBehavior ShortcutChangedCommand="{Binding StartShortcutChangedCommand}" />
+                    </i:Interaction.Behaviors>
+                </TextBox>
+                <Label Grid.Row="1">종료 단축키</Label>
+                <TextBox Text="{Binding StopShortcutText}"
 						 Grid.Row="1"
 						 Grid.Column="1"
 						 IsReadOnly="True"
 						 >
-					<i:Interaction.Behaviors>
-						<behavior:ShortcutTextBoxBehavior ShortcutChangedCommand="{Binding StopShortcutChangedCommand}" />
-					</i:Interaction.Behaviors>
-				</TextBox>
-			</Grid>
-		</GroupBox>
-		<GroupBox Margin="5,2.5,5,5" 
+                    <i:Interaction.Behaviors>
+                        <behavior:ShortcutTextBoxBehavior ShortcutChangedCommand="{Binding StopShortcutChangedCommand}" />
+                    </i:Interaction.Behaviors>
+                </TextBox>
+            </Grid>
+        </GroupBox>
+        <GroupBox Margin="5,2.5,5,5" 
 				  Header="동작 설정"
 				  Grid.Row="1">
 
-			<Grid>
-				<Grid.RowDefinitions>
-					<RowDefinition Height="Auto"/>
-					<RowDefinition/>
-				</Grid.RowDefinitions>
-				<Grid VerticalAlignment="Top">
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="Auto"/>
-						<ColumnDefinition/>
-					</Grid.ColumnDefinitions>
-					<Grid.RowDefinitions>
-						<RowDefinition/>
-						<RowDefinition/>
-						<RowDefinition/>
-					</Grid.RowDefinitions>
-					<Label>마우스 버튼</Label>
-					<StackPanel Grid.Column="1" Orientation="Horizontal">
-						<RadioButton IsChecked="{Binding LeftMouseButton}">좌클릭</RadioButton>
-						<RadioButton IsChecked="{Binding RightMouseButton}">우클릭</RadioButton>
-					</StackPanel>
-					<Label Grid.Row="1">시간 설정(ms)</Label>
-					<TextBox Grid.Row="1" Grid.Column="1" IsEnabled="{Binding IsRunning, Converter={StaticResource InvertBooleanConverter} }" >
-						<i:Interaction.Behaviors>
-							<behavior:IntegerOnlyTextBoxBehavior ValueChangedCommand="{Binding DelayChangedCommand}" />
-						</i:Interaction.Behaviors>
-					</TextBox>
-					<Label Grid.Row="2">현재 상태</Label>
-					<Label Grid.Row="2" Grid.Column="1" Content="{Binding RunningStatus}" />
-				</Grid>
-				<Grid Grid.Row="1">
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition/>
-						<ColumnDefinition/>
-					</Grid.ColumnDefinitions>
-					<Button IsEnabled="{Binding IsRunning, Converter={StaticResource InvertBooleanConverter}}"
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid VerticalAlignment="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Label>마우스 버튼</Label>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                        <RadioButton GroupName="MouseButton"
+                                     IsChecked="{
+                                        Binding SelectedButton, 
+                                        ConverterParameter={x:Static MouseButton.Left},
+                                        Converter={StaticResource EnumToBooleanConverter}
+                                     }"
+                                     >좌클릭</RadioButton>
+                        <RadioButton GroupName="MouseButton"
+                                     IsChecked="{
+                                        Binding SelectedButton, 
+                                        ConverterParameter={x:Static MouseButton.Right},
+                                        Converter={StaticResource EnumToBooleanConverter}
+                                     }"
+                                     >우클릭</RadioButton>
+                    </StackPanel>
+                    <Label Grid.Row="1">시간 설정(ms)</Label>
+                    <TextBox Grid.Row="1" Grid.Column="1" IsEnabled="{Binding IsRunning, Converter={StaticResource InvertBooleanConverter} }" >
+                        <i:Interaction.Behaviors>
+                            <behavior:IntegerOnlyTextBoxBehavior ValueChangedCommand="{Binding DelayChangedCommand}" />
+                        </i:Interaction.Behaviors>
+                    </TextBox>
+                    <Label Grid.Row="2">현재 상태</Label>
+                    <Label Grid.Row="2" Grid.Column="1" Content="{Binding RunningStatus}" />
+                </Grid>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Button IsEnabled="{Binding IsRunning, Converter={StaticResource InvertBooleanConverter}}"
 							Margin="0,0,2.5,0"
 							Command="{Binding StartCommand}"
 							>시작</Button>
-					<Button Grid.Column="1"
+                    <Button Grid.Column="1"
 							Margin="2.5,0,0,0"
 							IsEnabled="{Binding IsRunning}"
 							Command="{Binding StopCommand}"
 							>종료</Button>
-				</Grid>
-			</Grid>
+                </Grid>
+            </Grid>
 
-		</GroupBox>
-	</Grid>
+        </GroupBox>
+    </Grid>
 </Window>

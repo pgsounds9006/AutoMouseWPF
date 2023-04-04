@@ -63,6 +63,8 @@ namespace AutoMouseWPF.Behaviors
                 if (ShortcutChangedCommand.CanExecute(null))
                     ShortcutChangedCommand?.Execute(Shortcut);
             }
+            // remove focus
+            AssociatedObject.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
             _pressedKeys.Clear();
         }
     }
